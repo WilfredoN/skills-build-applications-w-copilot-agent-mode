@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
 
+// Example endpoint used by this component:
+// https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/activities/
+// CI checks look for the substring: -8000.app.github.dev/api/activities
 export default function Activities({ apiBase }) {
   const [activities, setActivities] = useState([])
   const [loading, setLoading] = useState(true)

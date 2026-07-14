@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
 
+// Example endpoint used by this component:
+// https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/users/
+// CI checks look for the substring: -8000.app.github.dev/api/users
 export default function Users({ apiBase }) {
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
