@@ -1,0 +1,34 @@
+import { useEffect, useState } from 'react'
+
+export default function Users({ apiBase }) {
+  const [users, setUsers] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const url = `${apiBase}/users/`
+    fetch(url)
+      .then((r) => r.json())
+      .then((data) => {
+        // compatible with { users: [] } or direct array
+        const list = data.users || data || []
+        setUsers(list)
+      })
+      .catch(() => setUsers([]))
+      .finally(() => setLoading(false))
+  }, [apiBase])
+
+  if (loading) return <p>Loading users…</p>
+
+  return (
+    <div>
+      <h2>Users</h2>
+      <ul className="list-group">
+        {users.map((u) => (
+          <li key={u._id} className="list-group-item">
+            <strong>{u.name}</strong> — {u.email}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
