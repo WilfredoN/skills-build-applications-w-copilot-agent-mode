@@ -13,7 +13,7 @@ export default function Teams({ apiBase }) {
       ? `https://${codespace}-8000.app.github.dev/api`
       : 'http://localhost:8000/api'
     const base = apiBase || defaultBase
-    const API_PATH = '/api/teams/'
+    const API_PATH = '/teams/'
     const url = `${base}${API_PATH}`
     fetch(url)
       .then((r) => r.json())
