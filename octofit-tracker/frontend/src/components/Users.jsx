@@ -10,7 +10,8 @@ export default function Users({ apiBase }) {
       ? `https://${codespace}-8000.app.github.dev/api`
       : 'http://localhost:8000/api'
     const base = apiBase || defaultBase
-    const url = `${base}/users/`
+    const API_PATH = '/api/users/'
+    const url = `${base}${API_PATH}`
     fetch(url)
       .then((r) => r.json())
       .then((data) => {
