@@ -5,7 +5,12 @@ export default function Activities({ apiBase }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const url = `${apiBase}/activities/`
+    const codespace = import.meta.env.VITE_CODESPACE_NAME
+    const defaultBase = codespace
+      ? `https://${codespace}-8000.app.github.dev/api`
+      : 'http://localhost:8000/api'
+    const base = apiBase || defaultBase
+    const url = `${base}/activities/`
     fetch(url)
       .then((r) => r.json())
       .then((data) => {

@@ -5,7 +5,12 @@ export default function Leaderboard({ apiBase }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const url = `${apiBase}/leaderboard/`
+    const codespace = import.meta.env.VITE_CODESPACE_NAME
+    const defaultBase = codespace
+      ? `https://${codespace}-8000.app.github.dev/api`
+      : 'http://localhost:8000/api'
+    const base = apiBase || defaultBase
+    const url = `${base}/leaderboard/`
     fetch(url)
       .then((r) => r.json())
       .then((data) => {
