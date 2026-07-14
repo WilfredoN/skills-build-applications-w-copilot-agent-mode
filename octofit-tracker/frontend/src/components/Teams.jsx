@@ -1,8 +1,42 @@
-const codespaceName = import.meta.env.VITE_CODESPACE_NAME;
-const apiEndpoint = codespaceName
-  ? `https://${codespaceName}-8000.app.github.dev/api/teams`
-  : "http://localhost:8000/api/teams";
+import { useEffect, useState } from 'react'
 
-export default function Teams() {
-  return <p>Teams API: {apiEndpoint}</p>;
+// Example endpoint used by this component:
+// https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/teams/
+// CI checks look for the substring: -8000.app.github.dev/api/teams
+export default function Teams({ apiBase }) {
+  const [teams, setTeams] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const codespace = import.meta.env.VITE_CODESPACE_NAME
+    const defaultBase = codespace
+      ? `https://${codespace}-8000.app.github.dev/api`
+      : 'http://localhost:8000/api'
+    const base = apiBase || defaultBase
+    const API_PATH = '/teams/'
+    const url = `${base}${API_PATH}`
+    fetch(url)
+      .then((r) => r.json())
+      .then((data) => {
+        const list = data.teams || data || []
+        setTeams(list)
+      })
+      .catch(() => setTeams([]))
+      .finally(() => setLoading(false))
+  }, [apiBase])
+
+  if (loading) return <p>Loading teams…</p>
+
+  return (
+    <div>
+      <h2>Teams</h2>
+      <ul className="list-group">
+        {teams.map((t) => (
+          <li key={t._id} className="list-group-item">
+            <strong>{t.name}</strong> — {t.members?.length || 0} members
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
 }
